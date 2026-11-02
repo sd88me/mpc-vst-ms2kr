@@ -1,0 +1,1429 @@
+{
+ "name": "MS2KR",
+ "params": [
+  {
+   "key": "program",
+   "name": "PROGRAM",
+   "min": 0,
+   "max": 127,
+   "default": 0,
+   "display": "int"
+  },
+  {
+   "key": "program_name",
+   "name": "NAME",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "prog_prev",
+   "name": "PROG -",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "step_of": "program",
+   "step_delta": -1
+  },
+  {
+   "key": "prog_next",
+   "name": "PROG +",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "step_of": "program",
+   "step_delta": 1
+  },
+  {
+   "key": "lcd1",
+   "name": "LCD 1",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "lcd2",
+   "name": "LCD 2",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "panic",
+   "name": "PANIC",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true
+  },
+  {
+   "key": "vol",
+   "name": "VOLUME",
+   "min": 0,
+   "max": 1023,
+   "default": 1023,
+   "display": "int"
+  },
+  {
+   "key": "out_level",
+   "name": "OUTPUT %",
+   "min": 0,
+   "max": 100,
+   "default": 100,
+   "display": "int"
+  },
+  {
+   "key": "status",
+   "name": "STATUS",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "bank_slot_1",
+   "name": "BANK A",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "bank_slot_2",
+   "name": "BANK B",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "bank_slot_3",
+   "name": "BANK C",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "bank_slot_4",
+   "name": "BANK D",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "bank_slot_5",
+   "name": "BANK E",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "bank_slot_6",
+   "name": "BANK F",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "bank_slot_7",
+   "name": "BANK G",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "bank_slot_8",
+   "name": "BANK H",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_1",
+   "name": "PROG 1",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_2",
+   "name": "PROG 2",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_3",
+   "name": "PROG 3",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_4",
+   "name": "PROG 4",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_5",
+   "name": "PROG 5",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_6",
+   "name": "PROG 6",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_7",
+   "name": "PROG 7",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_8",
+   "name": "PROG 8",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_9",
+   "name": "PROG 9",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_10",
+   "name": "PROG 10",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_11",
+   "name": "PROG 11",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_12",
+   "name": "PROG 12",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_13",
+   "name": "PROG 13",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_14",
+   "name": "PROG 14",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_15",
+   "name": "PROG 15",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "patch_slot_16",
+   "name": "PROG 16",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "favourite",
+   "name": "FAVOURITE",
+   "min": 0,
+   "max": 63,
+   "default": 63,
+   "display": "int"
+  },
+  {
+   "key": "fav_save",
+   "name": "SAVE FAV",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true
+  },
+  {
+   "key": "fav_delete",
+   "name": "DEL FAV",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true
+  },
+  {
+   "key": "o1c1",
+   "name": "OSC1 CTRL 1",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "o1c2",
+   "name": "OSC1 CTRL 2",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "o2semi",
+   "name": "OSC2 SEMI",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "o2tune",
+   "name": "OSC2 TUNE",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "mx1",
+   "name": "MIX OSC1",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "mx2",
+   "name": "MIX OSC2",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "mxn",
+   "name": "MIX NOISE",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "cut",
+   "name": "CUTOFF",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "res",
+   "name": "RESONANCE",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg1int",
+   "name": "EG1 INT",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "kbdtr",
+   "name": "KBD TRACK",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "lvl",
+   "name": "LEVEL",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "pan",
+   "name": "PAN",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg1a",
+   "name": "EG1 ATTACK",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg1d",
+   "name": "EG1 DECAY",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg1s",
+   "name": "EG1 SUSTAIN",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg1r",
+   "name": "EG1 RELEASE",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg2a",
+   "name": "EG2 ATTACK",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg2d",
+   "name": "EG2 DECAY",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg2s",
+   "name": "EG2 SUSTAIN",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "eg2r",
+   "name": "EG2 RELEASE",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "lfo1f",
+   "name": "LFO1 FREQ",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "lfo2f",
+   "name": "LFO2 FREQ",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "fxspd",
+   "name": "FX SPEED/TIME",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "fxdep",
+   "name": "FX DEPTH/FDBK",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "patch1",
+   "name": "PATCH 1",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "patch2",
+   "name": "PATCH 2",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "patch3",
+   "name": "PATCH 3",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "patch4",
+   "name": "PATCH 4",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "porta",
+   "name": "PORTAMENTO",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "tempo",
+   "name": "ARP TEMPO",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "gate",
+   "name": "ARP GATE",
+   "min": 0,
+   "max": 1023,
+   "default": 512,
+   "display": "int"
+  },
+  {
+   "key": "k_o1wave",
+   "name": "OSC1 WAVE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_o2wave",
+   "name": "OSC2 WAVE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_o2mod",
+   "name": "OSC2 MOD",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_ftype",
+   "name": "FILTER TYPE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_eg2gate",
+   "name": "EG2/GATE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_dist",
+   "name": "DISTORTION",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_timbre",
+   "name": "TIMBRE SEL",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_mseqon",
+   "name": "MSEQ ON",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_mseqrec",
+   "name": "MSEQ REC",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_seqsel",
+   "name": "SEQ SELECT",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_kbd",
+   "name": "KEYBOARD",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_bankdn",
+   "name": "BANK/OCT -",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_bankup",
+   "name": "BANK/OCT +",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_arpon",
+   "name": "ARP ON",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_arplat",
+   "name": "ARP LATCH",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_arprng",
+   "name": "ARP RANGE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_arptyp",
+   "name": "ARP TYPE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_lfo1",
+   "name": "LFO1 WAVE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_lfo2",
+   "name": "LFO2 WAVE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_fxsel",
+   "name": "MOD/DELAY",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_vpsel",
+   "name": "PATCH SEL",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_vpsrc",
+   "name": "PATCH SRC",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_vpdst",
+   "name": "PATCH DEST",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_curl",
+   "name": "CUR LEFT",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_curr",
+   "name": "CUR RIGHT",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_no",
+   "name": "- / NO",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_yes",
+   "name": "+ / YES",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pagem",
+   "name": "PAGE -",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pagep",
+   "name": "PAGE +",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_write",
+   "name": "WRITE",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_edit",
+   "name": "EDIT",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_global",
+   "name": "GLOBAL",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_exit",
+   "name": "EXIT",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "led_o1wave",
+   "name": "OSC1 WAVE",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_o2wave",
+   "name": "OSC2 WAVE",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_o2mod",
+   "name": "OSC2 MOD",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_ftype",
+   "name": "FILTER TYPE",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_timbre",
+   "name": "TIMBRE",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_seq",
+   "name": "SEQ",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_lfo1",
+   "name": "LFO1 WAVE",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_lfo2",
+   "name": "LFO2 WAVE",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_vpsel",
+   "name": "PATCH",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_vpsrc",
+   "name": "SOURCE",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_vpdst",
+   "name": "DEST",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_eg2gate",
+   "name": "EG2/GATE",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_dist",
+   "name": "DIST",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_fx",
+   "name": "FX",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_mseq",
+   "name": "MOD SEQ",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_mrec",
+   "name": "SEQ REC",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_arp",
+   "name": "ARP",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_latch",
+   "name": "LATCH",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_kbd",
+   "name": "KEYBOARD",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "led_orig",
+   "name": "ORIGINAL",
+   "min": 0,
+   "max": 0,
+   "default": 0,
+   "display": "string",
+   "poll": true
+  },
+  {
+   "key": "k_pad1",
+   "name": "KEY 1",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad2",
+   "name": "KEY 2",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad3",
+   "name": "KEY 3",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad4",
+   "name": "KEY 4",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad5",
+   "name": "KEY 5",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad6",
+   "name": "KEY 6",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad7",
+   "name": "KEY 7",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad8",
+   "name": "KEY 8",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad9",
+   "name": "KEY 9",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad10",
+   "name": "KEY 10",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad11",
+   "name": "KEY 11",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad12",
+   "name": "KEY 12",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad13",
+   "name": "KEY 13",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad14",
+   "name": "KEY 14",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad15",
+   "name": "KEY 15",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  },
+  {
+   "key": "k_pad16",
+   "name": "KEY 16",
+   "min": 0,
+   "max": 1,
+   "default": 0,
+   "momentary": true,
+   "hold_ms": 120
+  }
+ ],
+ "sections": [
+  {
+   "label": "Browse",
+   "keys": [
+    "program",
+    "program_name",
+    "prog_prev",
+    "prog_next",
+    "lcd1",
+    "lcd2",
+    "panic",
+    "vol",
+    "out_level"
+   ]
+  },
+  {
+   "label": "Banks",
+   "keys": [
+    "bank_slot_1",
+    "bank_slot_2",
+    "bank_slot_3",
+    "bank_slot_4",
+    "bank_slot_5",
+    "bank_slot_6",
+    "bank_slot_7",
+    "bank_slot_8",
+    "patch_slot_1",
+    "patch_slot_2",
+    "patch_slot_3",
+    "patch_slot_4",
+    "patch_slot_5",
+    "patch_slot_6",
+    "patch_slot_7",
+    "patch_slot_8",
+    "patch_slot_9",
+    "patch_slot_10",
+    "patch_slot_11",
+    "patch_slot_12",
+    "patch_slot_13",
+    "patch_slot_14",
+    "patch_slot_15",
+    "patch_slot_16",
+    "favourite",
+    "fav_save",
+    "fav_delete"
+   ]
+  },
+  {
+   "label": "Oscillators",
+   "keys": [
+    "o1c1",
+    "o1c2",
+    "o2semi",
+    "o2tune",
+    "mx1",
+    "mx2",
+    "mxn",
+    "porta",
+    "k_o1wave",
+    "k_o2wave",
+    "k_o2mod"
+   ]
+  },
+  {
+   "label": "Filter & Amp",
+   "keys": [
+    "cut",
+    "res",
+    "eg1int",
+    "kbdtr",
+    "lvl",
+    "pan",
+    "k_ftype",
+    "k_eg2gate",
+    "k_dist"
+   ]
+  },
+  {
+   "label": "Envelopes",
+   "keys": [
+    "eg1a",
+    "eg1d",
+    "eg1s",
+    "eg1r",
+    "eg2a",
+    "eg2d",
+    "eg2s",
+    "eg2r"
+   ]
+  },
+  {
+   "label": "LFO & FX",
+   "keys": [
+    "lfo1f",
+    "lfo2f",
+    "fxspd",
+    "fxdep",
+    "k_lfo1",
+    "k_lfo2",
+    "k_fxsel"
+   ]
+  },
+  {
+   "label": "Patch & Arp",
+   "keys": [
+    "patch1",
+    "patch2",
+    "patch3",
+    "patch4",
+    "tempo",
+    "gate",
+    "k_mseqon",
+    "k_mseqrec",
+    "k_seqsel",
+    "k_arpon",
+    "k_arplat",
+    "k_arprng",
+    "k_arptyp",
+    "k_vpsel",
+    "k_vpsrc",
+    "k_vpdst"
+   ]
+  },
+  {
+   "label": "Edit",
+   "keys": [
+    "k_timbre",
+    "k_kbd",
+    "k_bankdn",
+    "k_bankup",
+    "k_curl",
+    "k_curr",
+    "k_no",
+    "k_yes",
+    "k_pagem",
+    "k_pagep",
+    "k_write",
+    "k_edit",
+    "k_global",
+    "k_exit"
+   ]
+  },
+  {
+   "label": "System",
+   "keys": [
+    "status"
+   ]
+  },
+  {
+   "label": "LEDs",
+   "keys": [
+    "led_o1wave",
+    "led_o2wave",
+    "led_o2mod",
+    "led_ftype",
+    "led_timbre",
+    "led_seq",
+    "led_lfo1",
+    "led_lfo2",
+    "led_vpsel",
+    "led_vpsrc",
+    "led_vpdst",
+    "led_eg2gate",
+    "led_dist",
+    "led_fx",
+    "led_mseq",
+    "led_mrec",
+    "led_arp",
+    "led_latch",
+    "led_kbd",
+    "led_orig"
+   ]
+  },
+  {
+   "label": "Keys",
+   "keys": [
+    "k_pad1",
+    "k_pad2",
+    "k_pad3",
+    "k_pad4",
+    "k_pad5",
+    "k_pad6",
+    "k_pad7",
+    "k_pad8",
+    "k_pad9",
+    "k_pad10",
+    "k_pad11",
+    "k_pad12",
+    "k_pad13",
+    "k_pad14",
+    "k_pad15",
+    "k_pad16"
+   ]
+  }
+ ]
+}

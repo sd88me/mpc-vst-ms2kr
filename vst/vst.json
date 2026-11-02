@@ -1,0 +1,40 @@
+{
+  "name": "MS2KR",
+  "vendor": "sd88me",
+  "uid": "M2kR",
+  "version": 100,
+  "targets": [
+    "aarch64"
+  ],
+  "so": "ms2kr.so",
+  "programs": {
+    "param": "favourite"
+  },
+  "params": "params.json",
+  "defines": {
+    "HAS_DISPLAY_REV": 1,
+    "DISPLAY_REV_NO_UPDATE": 1,
+    "MODULE_SUBDIR": "\"Content\"",
+    "MODULE_DIR": "\"/sdcard/vst/ms2kr\"",
+    "PARAM_TEXT_MAX": 64
+  },
+  "build": {
+    "root": "..",
+    "sources": [],
+    "cflags": [],
+    "libs": [
+      "vst/build/engine/libms2kr_all.a",
+      "-Wl,--exclude-libs,ALL",
+      "-static-libstdc++",
+      "-static-libgcc",
+      "-lstdc++",
+      "-lm",
+      "-ldl",
+      "-lpthread",
+      "vst/build/alsa/libasound.so"
+    ]
+  },
+  "layout": "layout.conf",
+  "art": "html",
+  "tile": "images/tile.png"
+}

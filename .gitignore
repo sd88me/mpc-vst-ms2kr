@@ -1,0 +1,10 @@
+build/
+vst/build/
+dist/
+dist-local/
+*.wav
+roms/
+tools/package_vst2.py
+ms2000.nvram
+*.nvram
+docs/reference/
