@@ -52,12 +52,12 @@ constexpr uint32_t kEditBuffer = 0x402E0Eu;    // DRAM: the 254-byte program bei
 constexpr uint32_t kProgramsAt = 0xA0400u;     // flash: 128 x 254-byte programs, A01..H16
 constexpr int kProgLen = 254, kNameLen = 12;
 constexpr int kFavSlots = 64;
-constexpr int kRing = 4096, kTarget = 768, kChunk = 64;   // output frames; kTarget ~17.4 ms (as Osirus) = the least the ring is kept ahead
+constexpr int kRing = 8192, kTarget = 768, kChunk = 64;   // output frames; kTarget ~17.4 ms (as Osirus) = the least the ring is kept ahead
 constexpr int kTargetMax = 3072;                           // ~70 ms: the most (when the host reads in big bursts)
 // A program change (and a whole program sent as SysEx) makes the firmware upload DSP code: the JIT recompiles and one chunk takes
 // ~17 ms on x86, ~45 ms on the A55 (measured 2026-11-03), more than the ring holds. So such a change waits until the ring is this
 // far ahead (~58 ms; the machine runs faster than real time, so ~60 ms), then the stall eats the extra and the ring settles back.
-constexpr int kBoost = 2560;
+constexpr int kBoost = 3584;   // ~81 ms. In MPC 2026-11-03 neither 2560 nor 3584 fully covers stepping programs every 0.5 s (8-14 dropouts in 20 steps); one step per 1.5 s: none
 constexpr int kMidiFifo = 1024;
 constexpr char kFavMagic[8] = {'M', '2', 'F', 'A', 'V', '1', '\n', 0};
 
@@ -247,7 +247,7 @@ void saveMemory(Inst* in)
  * the last one carrying "Audio Processing"; left unpinned, the two emulator threads wandered between all cores, ran on the slow
  * ones part of the time and dropped out (measured 2026-11-03: ring empty in most 5 s windows; pinned to 4-6 by hand: none).
  * So: the fastest cores, without the highest-numbered one when there are three or more. Same-speed CPUs: left alone. */
-void pinToFastCores()
+std::vector<int> fastCores()
 {
     long best = 0; long f[64]; int n = 0;
     for (; n < 64; ++n) {
@@ -261,13 +261,24 @@ void pinToFastCores()
     std::vector<int> fast;
     bool mixed = false;
     for (int i = 0; i < n; ++i) { if (f[i] == best) fast.push_back(i); else mixed = true; }
-    if (!mixed || fast.empty()) return;
+    if (!mixed || fast.empty()) return {};
     if (fast.size() >= 3) fast.pop_back();
-    cpu_set_t set; CPU_ZERO(&set);
-    for (int c : fast) CPU_SET(c, &set);
-    sched_setaffinity(0, sizeof set, &set);
-    std::string l; for (int c : fast) l += " " + std::to_string(c);
-    std::fprintf(stderr, "[ms2kr] emulator threads on the fast cores:%s\n", l.c_str());
+    return fast;
+}
+
+bool pinTo(int core) { cpu_set_t set; CPU_ZERO(&set); CPU_SET(core, &set); return sched_setaffinity(0, sizeof set, &set) == 0; }
+
+/* The two emulator threads hand work to each other all the time (the H8S waits for the DSP and the other way round), so they
+ * must not share a core: within one shared mask they often did, and a program change then ran short of time (measured in MPC
+ * 2026-11-03: 113 dropouts stepping 20 programs at 2/s). The DSP thread (started from the boot thread) gets the first fast
+ * core, the machine thread the last; MPC's busiest worker and "Audio Processing" stay out of the way as far as they can. */
+void pinToFastCores() { const auto f = fastCores(); if (!f.empty()) pinTo(f.front()); }   // before the runner starts the DSP thread
+void pinMachineThread()
+{
+    const auto f = fastCores();
+    if (f.size() < 2) return;
+    pinTo(f.back());
+    std::fprintf(stderr, "[ms2kr] DSP thread on core %d, machine thread on core %d\n", f.front(), f.back());
 }
 
 void applyState(Inst* in, const std::string& s);
@@ -314,6 +325,7 @@ void bootThread(Inst* in)
     in->status = "booting";
     in->runner = std::make_unique<MS2000::Ms2kRunner>(cfg, hooks);
     if (!in->runner->init() || !in->runner->startManual()) { in->status = "the machine did not start"; in->phase = 2; return; }
+    pinMachineThread();   // the DSP thread has started on the first fast core: this thread moves to its own
     in->runner->getEmulator().setMidiOutSink([in](uint8_t b) { std::lock_guard<std::mutex> l(in->outMx); if (in->outBytes.size() < 4096) in->outBytes.push_back(b); });
     applyPanel(in);
     runMachine(in, 4.0);                                    // boot: the DSP program upload, the splash
