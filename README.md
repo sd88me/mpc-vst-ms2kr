@@ -7,9 +7,9 @@ It is not a re-creation of the sound: it runs the synthesizer's **own firmware**
 DSP (Motorola DSP56362) are emulated by [ms2000r-emu](https://github.com/Tuth/ms2000r-emu), so programs, the vocoder,
 the arpeggiator, the mod sequencer and the effects behave as on the hardware.
 
-![PLAY page](docs/skin-preview/play.png)
+![PLAY page](docs/screenshots/play.png)
 
-*(The screenshots in this README are offline previews of the skin.)*
+*(Screenshots from an MPC Live III. The orange frame and "Q" tag mark the active Q-Link group.)*
 
 ## What you need
 
@@ -53,7 +53,12 @@ names on a knob are the panel's vocoder functions, printed where they differ fro
 | **LFO / FX / PATCH** | both LFOs, the effects, the virtual patch |
 | **ARP / SEQ** | arpeggiator, mod sequence, keyboard mode, bank/octave |
 
-![BANKS page](docs/skin-preview/banks.png)
+![BANKS page](docs/screenshots/banks.png)
+
+| | |
+|---|---|
+| ![OSC page](docs/screenshots/osc.png) | ![FILTER / EG page](docs/screenshots/filter-eg.png) |
+| ![LFO / FX / PATCH page](docs/screenshots/lfo-fx-patch.png) | ![ARP / SEQ page](docs/screenshots/arp-seq.png) |
 
 - **Favourites:** + FAV takes the sound as it is now, knob tweaks included, and opens an on-screen keyboard with its name (up to 20
   characters): edit it and SAVE. Favourites appear in MPC's own preset menu for the plugin; - FAV removes the selected one. They are
