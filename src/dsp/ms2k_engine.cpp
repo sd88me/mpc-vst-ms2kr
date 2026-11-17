@@ -14,6 +14,7 @@
  * ROMs (never shipped): <module dir>/roms/flash.bin and boot-362.bin (or boot-362.ms2000.bin). */
 #include <algorithm>
 #include <array>
+#include <chrono>
 #include <atomic>
 #include <cmath>
 #include <cstdint>
@@ -26,6 +27,7 @@
 #include <thread>
 #include <vector>
 #include <condition_variable>
+#include <random>
 #include <functional>
 #include <future>
 #include <sched.h>
@@ -149,6 +151,8 @@ struct Inst {
     int program = 0;                             // the program last selected (A01 = 0)
     int favCount = 0, favCurrent = -1; char favName[kFavSlots][32]; uint8_t favData[kFavSlots][kProgLen];
     std::string pendingState;                    // a project restore that arrived while booting
+    std::array<uint8_t, kProgLen> favPending{};  // fav_begin: the edit buffer as it was when +FAV was pressed
+    bool favPendingValid = false;
 };
 
 std::string progLabel(int p) { char b[8]; std::snprintf(b, sizeof b, "%c%02d", 'A' + p / 16, p % 16 + 1); return b; }
@@ -281,7 +285,7 @@ void pinMachineThread()
     std::fprintf(stderr, "[ms2kr] DSP thread on core %d, machine thread on core %d\n", f.front(), f.back());
 }
 
-void applyState(Inst* in, const std::string& s);
+void applyState(Inst* in, const std::string& s, bool booting = false);
 void produce(Inst* in);
 void machineLoop(Inst* in);
 
@@ -340,7 +344,7 @@ void bootThread(Inst* in)
         for (size_t k = 0; k + 4 < o.size(); ++k)
             if (o[k] == 0xF0 && o[k + 1] == 0x7E && o[k + 3] == 0x06 && o[k + 4] == 0x02) { in->midiCh = o[k + 2] & 0x0F; i = 99; break; }
     }
-    if (!in->pendingState.empty()) { applyState(in, in->pendingState); in->pendingState.clear(); runMachine(in, 0.3); }
+    if (!in->pendingState.empty()) { applyState(in, in->pendingState, true); in->pendingState.clear(); runMachine(in, 0.5); }   // (0.1.0 never sent it: phase is still 0 here)
     in->pos = 1.0; in->L.assign(4, 0.0f); in->R.assign(4, 0.0f);
     while (in->ringW.load() - in->ringR.load() < in->target.load() && !in->quit.load()) produce(in);   // start full
     char b[64]; std::snprintf(b, sizeof b, "ready (MIDI ch %d)", in->midiCh + 1);
@@ -382,21 +386,45 @@ void readEditBuffer(Inst* in, uint8_t* out)
     for (int i = 0; i < kProgLen; ++i) out[i] = e.peekExternal(kEditBuffer + uint32_t(i));
 }
 
-void favSave(Inst* in)
+std::array<uint8_t, kProgLen> editBuffer(Inst* in)
 {
-    if (in->phase.load() != 1 || in->favCount >= kFavSlots) return;
-    std::array<uint8_t, kProgLen> eb = runSync(in, [in] { std::array<uint8_t, kProgLen> a{}; readEditBuffer(in, a.data()); return a; });
+    return runSync(in, [in] { std::array<uint8_t, kProgLen> a{}; readEditBuffer(in, a.data()); return a; });
+}
+
+// store a program as a favourite under `name` (empty: the program's own name). The same program again renames its slot.
+void favAdd(Inst* in, const std::array<uint8_t, kProgLen>& eb, const std::string& given)
+{
+    if (in->phase.load() != 1) return;
     const uint8_t* d = eb.data();
     if (std::all_of(eb.begin(), eb.end(), [](uint8_t v) { return v == 0; })) return;   // no answer
-    for (int i = 0; i < in->favCount; ++i) if (std::memcmp(in->favData[i], d, kProgLen) == 0) return;   // already there
+    const std::string nm = given.empty() ? trimName(d) : given;
+    for (int i = 0; i < in->favCount; ++i) if (std::memcmp(in->favData[i], d, kProgLen) == 0) {   // already there
+        if (!given.empty()) { std::snprintf(in->favName[i], 31, "%s", given.c_str()); favWrite(in); }
+        in->favCurrent = i;
+        return;
+    }
+    if (in->favCount >= kFavSlots) return;
     const int i = in->favCount;
     std::memset(in->favName[i], 0, 32);
-    const std::string nm = trimName(d);
     std::snprintf(in->favName[i], 31, "%s", nm.empty() ? ("Favourite " + std::to_string(i + 1)).c_str() : nm.c_str());
     std::memcpy(in->favData[i], d, kProgLen);
     in->favCount++;
     if (!favWrite(in)) in->favCount--;
     else in->favCurrent = i;
+}
+
+void favSave(Inst* in)
+{
+    if (in->phase.load() != 1) return;
+    favAdd(in, editBuffer(in), "");
+}
+
+void randomProgram(Inst* in)
+{
+    static std::mt19937 rng(uint32_t(std::chrono::steady_clock::now().time_since_epoch().count()) ^ std::random_device{}());
+    int p;
+    do p = int(rng() % 128u); while (p == in->program && in->favCurrent < 0);
+    selectProgram(in, p);
 }
 
 void favDelete(Inst* in)
@@ -422,7 +450,7 @@ std::string makeState(Inst* in)
     return s;
 }
 
-void applyState(Inst* in, const std::string& s)
+void applyState(Inst* in, const std::string& s, bool booting)
 {
     if (s.compare(0, 5, "M2S1 ") != 0) return;
     int prog = 0, vol = 1000; char kn[200] = {}, eb[600] = {};
@@ -434,7 +462,7 @@ void applyState(Inst* in, const std::string& s)
         in->knobs[kKnobs[i].mux][kKnobs[i].x] = uint16_t(std::min(1023L, std::strtol(h, nullptr, 16)));
     }
     in->program = std::clamp(prog, 0, 127);
-    if (!in->runner || in->phase.load() == 0) return;   // booting: bootThread applies pendingState
+    if (!in->runner || (in->phase.load() == 0 && !booting)) return;   // booting: bootThread applies pendingState
     applyPanel(in);
     in->runner->sendMIDIData(std::vector<uint8_t>{uint8_t(0xC0 | in->midiCh), uint8_t(in->program)}.data(), 2);
     if (n == 4 && std::strlen(eb) == size_t(kProgLen) * 2) {   // the sound as it was, knob tweaks included
@@ -498,6 +526,12 @@ void eSet(void* p, const char* key, const char* val)
     if (!std::strcmp(key, "prog_next")) { if (iv) selectProgram(in, (in->program + 1) % 128); return; }
     if (!std::strcmp(key, "fav_save")) { if (iv) favSave(in); return; }
     if (!std::strcmp(key, "fav_delete")) { if (iv) favDelete(in); return; }
+    if (!std::strcmp(key, "fav_begin")) { if (iv && live) { in->favPending = editBuffer(in); in->favPendingValid = true; } return; }   // +FAV: the sound as it is now
+    if (!std::strcmp(key, "fav_save_as")) {   // the naming keyboard's SAVE: the sound kept by fav_begin, under the typed name
+        if (live) { favAdd(in, in->favPendingValid ? in->favPending : editBuffer(in), val); in->favPendingValid = false; }
+        return;
+    }
+    if (!std::strcmp(key, "random_patch")) { if (iv && live) randomProgram(in); return; }
     if (!std::strcmp(key, "favourite")) {
         if (iv >= 0 && iv < in->favCount && live) {
             std::vector<uint8_t> d(in->favData[iv], in->favData[iv] + kProgLen);
@@ -592,6 +626,17 @@ int eGet(void* p, const char* key, char* buf, int len)
         { std::lock_guard<std::mutex> l(in->ledMx);
           for (const auto& o : g.opts) if (in->lit[o.ls][o.ld] > 0.25f) { if (!t.empty()) t += "+"; t += o.name; } }
         return std::snprintf(buf, len, "%s", t.empty() ? g.none : t.c_str());
+    }
+    if (!std::strcmp(key, "ready")) return std::snprintf(buf, len, "%d", live ? 1 : 0);
+    if (!std::strcmp(key, "fav_count")) return std::snprintf(buf, len, "%d", in->favCount);
+    if (!std::strncmp(key, "fav_name:", 9)) {
+        const int i = std::atoi(key + 9);
+        return std::snprintf(buf, len, "%s", i >= 0 && i < in->favCount ? in->favName[i] : "");
+    }
+    if (!std::strcmp(key, "sound_name") || !std::strcmp(key, "fav_default_name")) {   // the sound being played, by its own name
+        if (!live) return std::snprintf(buf, len, "%s", "");
+        const auto eb = editBuffer(in);
+        return std::snprintf(buf, len, "%s", trimName(eb.data()).c_str());
     }
     if (!std::strcmp(key, "favourite"))
         return std::snprintf(buf, len, "%d", in->favCurrent >= 0 ? in->favCurrent : std::min(in->favCount, kFavSlots - 1));
