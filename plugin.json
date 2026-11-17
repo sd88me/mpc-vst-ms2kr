@@ -1,0 +1,15 @@
+{
+  "name": "MS2KR",
+  "manufacturer": "sd88me",
+  "version": "0.2.0",
+  "kind": "instrument",
+  "uid": "M2kR",
+  "numInputs": 0,
+  "numOutputs": 2,
+  "category": "Synth",
+  "file64": "VST/ms2kr-arm64.so",
+  "description": "Korg MS2000R emulation: the synthesizer's own firmware on an emulated H8S and DSP56362 (ms2000r-emu). Needs your own MS2000/MS2000R ROM dumps in Content/roms/.",
+  "author": "sd88me",
+  "url": "https://github.com/sd88me/mpc-vst-ms2kr",
+  "license": "GPL-3.0-only"
+}
