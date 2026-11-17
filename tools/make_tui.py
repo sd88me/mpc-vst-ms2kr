@@ -140,7 +140,12 @@ def button(kids, key, b, on, off, bid=1, n=1, name=None):
 
 
 # ---- a page: art + widgets at the same coordinates + Q-Link blocks -----------------------------------------------------------
-PILLS = {}
+def same(a, b):
+    """True when two captions say the same (the boxed vocoder name is only worth printing when it differs from the panel name)"""
+    n = lambda t: re.sub(r"[^a-z0-9]", "", (t or "").lower())
+    return n(a) == n(b)
+
+
 HDR_Y = 112          # the header (wordmark, LCD, program keys) ends here
 
 
@@ -185,6 +190,8 @@ class Page:
     def knob(self, key, cx, gc, cap, pill=None, exact=False):
         """gc = the vertical centre of the section's content: the knob with its caption above and its scale round it is centred on it"""
         cy = gc if exact else gc + 15
+        if same(pill, cap):
+            pill = None
         A.ticks(self.art, cx, cy, 46)
         A.caption(self.art, cx, cy - 74, cap, 15, width=140)
         if pill:
@@ -196,6 +203,8 @@ class Page:
     def key(self, key, cx, gc, cap, kind="black", w=92, h=42, led=None, pill=None, space=False, exact=False):
         """a panel key with its caption above (and an optional boxed second caption above that), its LED readout in a well below. gc = the
         vertical centre of the section's content: the group (caption .. well) is centred on it; space keeps the room of a readout that is not there"""
+        if same(pill, cap):
+            pill = None
         top = h // 2 + (45 if pill else 25)
         bot = h // 2 + (50 if (led or space) else 8)
         cy = gc if exact else int(round(gc - (bot - top) / 2.0))
@@ -363,7 +372,7 @@ def page_lfo(fn):
     xs = spread(816, 1264, 3)
     pg.key("k_fxsel", xs[0], 260, "MOD / DELAY", w=96, led="led_fx", pill="MOD / DELAY")
     pg.knob("fxspd", xs[1], 260, "SPEED / TIME", "SPEED / TIME")
-    pg.knob("fxdep", xs[2], 260, "DEPTH / FEEDBACK", "DEPTH / FB")
+    pg.knob("fxdep", xs[2], 260, "DEPTH / FEEDBACK")
     pg.section(16, 408, 1264, 614, "VIRTUAL PATCH")
     kx = spread(16, 640, 3)
     pg.key("k_vpsel", kx[0], 511, "SELECT", w=96, led="led_vpsel")

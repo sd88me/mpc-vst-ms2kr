@@ -1,0 +1,9 @@
+[
+  {
+    "version": "0.2.0",
+    "device": "MPC Live III (Gen2)",
+    "firmware": "MPC OS 3.10.1",
+    "date": "2026-11-17",
+    "note": "Tested as the beta build (MS2KR 2 Beta, own uid) from VST2 Plugins: loads, plays, the pages and tiles. The last skin tweaks (lit tiles, panel labels) and the install.sh upgrade are not separately device-tested; a 0.1.0 project was tested offline with a real 0.1.0 chunk."
+  }
+]
