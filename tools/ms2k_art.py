@@ -399,11 +399,25 @@ def glyph_key(w, h, kind, pressed, text=None, size=20, ink=None):
 
 
 def tile(w, h, lit):
-    """A list tile (a bank or a program): a dark glass strip, lit = an amber edge and a lamp at its left. Text is live, drawn over it."""
+    """A list tile (a bank or a program). lit=False is the dark glass strip with a dark lamp, drawn into the page art. lit=True is the
+    Button's on image, laid over the live name: translucent (a warm tint, an amber edge, a glowing lamp), so the text stays readable."""
     S = 3
     m = 4
     W, H = (w + 2 * m) * S, (h + 2 * m) * S
     im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    lx, ly, lr = (m + 14) * S, (m + h / 2) * S, 5 * S
+    if lit:
+        tint = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(tint).rounded_rectangle((m * S, m * S, (m + w) * S, (m + h) * S), 7 * S, fill=(255, 150, 60, 70))
+        im.alpha_composite(tint)
+        gl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(gl).ellipse((lx - lr * 2, ly - lr * 2, lx + lr * 2, ly + lr * 2), fill=(255, 120, 60, 130))
+        im.alpha_composite(gl.filter(ImageFilter.GaussianBlur(3 * S)))
+        d = ImageDraw.Draw(im)
+        d.rounded_rectangle((m * S, m * S, (m + w) * S, (m + h) * S), 7 * S, outline=(255, 170, 90, 240), width=int(1.5 * S))
+        d.ellipse((lx - lr, ly - lr, lx + lr, ly + lr), fill=(255, 92, 52, 255))
+        d.ellipse((lx - lr // 2 - S, ly - lr // 2 - S, lx, ly), fill=(255, 210, 190, 255))
+        return im.resize((w + 2 * m, h + 2 * m), Image.LANCZOS)
     d = ImageDraw.Draw(im)
     d.rounded_rectangle((m * S, (m + 1) * S, (m + w) * S, (m + h + 1) * S), 7 * S, fill=SHADOW + (110,))
     im = im.filter(ImageFilter.GaussianBlur(1.5 * S))
@@ -412,25 +426,14 @@ def tile(w, h, lit):
     mk = Image.new("L", (W, H), 0)
     ImageDraw.Draw(mk).rounded_rectangle((m * S, m * S, (m + w) * S, (m + h) * S), 7 * S, fill=255)
     mp = mk.load()
-    top, bot = ((44, 62, 74), (20, 34, 44)) if not lit else ((92, 70, 40), (44, 30, 16))
     for y in range(m * S, (m + h) * S):
-        t = (y - m * S) / (h * S)
-        c = lerp(top, bot, t)
+        c = lerp((44, 62, 74), (20, 34, 44), (y - m * S) / (h * S))
         for x in range(m * S, (m + w) * S):
             if mp[x, y]:
                 bp[x, y] = c + (255,)
     im.alpha_composite(body)
     d = ImageDraw.Draw(im)
-    d.rounded_rectangle((m * S, m * S, (m + w) * S, (m + h) * S), 7 * S, outline=((255, 170, 90) if lit else (120, 156, 172)) + (230 if lit else 150,), width=int(1.5 * S) if lit else S)
+    d.rounded_rectangle((m * S, m * S, (m + w) * S, (m + h) * S), 7 * S, outline=(120, 156, 172, 150), width=S)
     d.line(((m + 8) * S, (m + 1) * S, (m + w - 8) * S, (m + 1) * S), fill=(255, 255, 255, 60), width=S)
-    lx, ly, lr = (m + 14) * S, (m + h / 2) * S, 5 * S
-    if lit:
-        gl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        ImageDraw.Draw(gl).ellipse((lx - lr * 2, ly - lr * 2, lx + lr * 2, ly + lr * 2), fill=(255, 120, 60, 130))
-        im.alpha_composite(gl.filter(ImageFilter.GaussianBlur(3 * S)))
-        d = ImageDraw.Draw(im)
-        d.ellipse((lx - lr, ly - lr, lx + lr, ly + lr), fill=(255, 92, 52, 255))
-        d.ellipse((lx - lr // 2 - S, ly - lr // 2 - S, lx, ly), fill=(255, 210, 190, 255))
-    else:
-        d.ellipse((lx - lr, ly - lr, lx + lr, ly + lr), fill=(10, 20, 28, 255), outline=(90, 120, 134, 200))
+    d.ellipse((lx - lr, ly - lr, lx + lr, ly + lr), fill=(10, 20, 28, 255), outline=(90, 120, 134, 200))
     return im.resize((w + 2 * m, h + 2 * m), Image.LANCZOS)

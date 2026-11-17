@@ -484,6 +484,7 @@ def preview(pages, arts, defs, keyboard=False):
     for pg in pages:
         im = Image.open(os.path.join(OUT, arts[pg.name])).convert("RGBA")
         d = ImageDraw.Draw(im)
+        lit = []
         if keyboard and not pg.keyboard:
             continue
         for e in pg.kids + (pg.overlay if keyboard else []):
@@ -509,7 +510,9 @@ def preview(pages, arts, defs, keyboard=False):
             elif cd["type"] == "Button" and cd["data"]["offImage"] != CLEAR:
                 im.alpha_composite(Image.open(os.path.join(OUT, cd["data"]["offImage"])).convert("RGBA"), (x, y))
             elif cd["type"] == "Button" and cd["name"] in ("bank_slot_1 tile", "patch_slot_1 tile"):
-                im.alpha_composite(Image.open(os.path.join(OUT, cd["data"]["onImage"])).convert("RGBA"), (x, y))
+                lit.append((cd["data"]["onImage"], x, y))
+        for f, x, y in lit:   # the lit tiles' overlay is the Button, on top of the label: composed last, as on the device
+            im.alpha_composite(Image.open(os.path.join(OUT, f)).convert("RGBA"), (x, y))
         if not keyboard:
             for _, r in pg.blocks:
                 d.rectangle(r, outline=(255, 255, 255, 200), width=2)
