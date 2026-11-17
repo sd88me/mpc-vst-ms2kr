@@ -382,3 +382,55 @@ def wordmark(im, x, y):
     d = ImageDraw.Draw(im)
     d.text((x + 6, y + out.height + 2), "ANALOG MODELING SYNTHESIZER", font=F(13, True), fill=INK_DIM + (255,), anchor="lm")
     return out.size
+
+
+# ---- widgets' images ---------------------------------------------------------------------------------------------------------
+def glyph_key(w, h, kind, pressed, text=None, size=20, ink=None):
+    """a key image with a centred legend baked in (PANIC, RANDOM, - and +, the keyboard's keys)"""
+    im = key(w, h, kind, pressed)
+    if text:
+        d = ImageDraw.Draw(im)
+        f = fit(text, size, w - 10)
+        cy = im.height // 2 + (1 if pressed else -1)
+        ink = ink or (INK if kind == "black" else (40, 44, 48))
+        d.text((im.width // 2 + 1, cy + 1), text, font=f, fill=(0, 0, 0, 120), anchor="mm")
+        d.text((im.width // 2, cy), text, font=f, fill=ink + (255,), anchor="mm")
+    return im
+
+
+def tile(w, h, lit):
+    """A list tile (a bank or a program): a dark glass strip, lit = an amber edge and a lamp at its left. Text is live, drawn over it."""
+    S = 3
+    m = 4
+    W, H = (w + 2 * m) * S, (h + 2 * m) * S
+    im = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle((m * S, (m + 1) * S, (m + w) * S, (m + h + 1) * S), 7 * S, fill=SHADOW + (110,))
+    im = im.filter(ImageFilter.GaussianBlur(1.5 * S))
+    body = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    bp = body.load()
+    mk = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(mk).rounded_rectangle((m * S, m * S, (m + w) * S, (m + h) * S), 7 * S, fill=255)
+    mp = mk.load()
+    top, bot = ((44, 62, 74), (20, 34, 44)) if not lit else ((92, 70, 40), (44, 30, 16))
+    for y in range(m * S, (m + h) * S):
+        t = (y - m * S) / (h * S)
+        c = lerp(top, bot, t)
+        for x in range(m * S, (m + w) * S):
+            if mp[x, y]:
+                bp[x, y] = c + (255,)
+    im.alpha_composite(body)
+    d = ImageDraw.Draw(im)
+    d.rounded_rectangle((m * S, m * S, (m + w) * S, (m + h) * S), 7 * S, outline=((255, 170, 90) if lit else (120, 156, 172)) + (230 if lit else 150,), width=int(1.5 * S) if lit else S)
+    d.line(((m + 8) * S, (m + 1) * S, (m + w - 8) * S, (m + 1) * S), fill=(255, 255, 255, 60), width=S)
+    lx, ly, lr = (m + 14) * S, (m + h / 2) * S, 5 * S
+    if lit:
+        gl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+        ImageDraw.Draw(gl).ellipse((lx - lr * 2, ly - lr * 2, lx + lr * 2, ly + lr * 2), fill=(255, 120, 60, 130))
+        im.alpha_composite(gl.filter(ImageFilter.GaussianBlur(3 * S)))
+        d = ImageDraw.Draw(im)
+        d.ellipse((lx - lr, ly - lr, lx + lr, ly + lr), fill=(255, 92, 52, 255))
+        d.ellipse((lx - lr // 2 - S, ly - lr // 2 - S, lx, ly), fill=(255, 210, 190, 255))
+    else:
+        d.ellipse((lx - lr, ly - lr, lx + lr, ly + lr), fill=(10, 20, 28, 255), outline=(90, 120, 134, 200))
+    return im.resize((w + 2 * m, h + 2 * m), Image.LANCZOS)
