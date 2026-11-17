@@ -62,18 +62,18 @@ def panel(w=1280, h=628, seed=3):
             px[x, y] = lerp(TEAL_LO, TEAL_HI, min(1.0, max(0.0, t)))
     rnd = random.Random(seed)
     flake = Image.effect_noise((w, h), 70).convert("L")           # sparkle: only the brightest specks, slightly blurred
-    flake = flake.point(lambda p: 255 if p > 246 else (70 if p > 238 else 0)).filter(ImageFilter.GaussianBlur(0.6))
+    flake = flake.point(lambda p: 255 if p > 250 else (40 if p > 246 else 0)).filter(ImageFilter.GaussianBlur(0.6))
     grain = Image.effect_noise((w, h), 18).convert("L").filter(ImageFilter.GaussianBlur(0.7))
     grain = ImageChops.offset(grain, 0, 0)
     im = base.convert("RGBA")
     fl = Image.new("RGBA", (w, h), (214, 236, 246, 0))
-    fl.putalpha(flake.point(lambda p: int(p * 0.28)))
+    fl.putalpha(flake.point(lambda p: int(p * 0.12)))
     im.alpha_composite(fl)
     g = Image.new("RGBA", (w, h), (255, 255, 255, 0))
-    g.putalpha(grain.point(lambda p: max(0, p - 132) // 7))
+    g.putalpha(grain.point(lambda p: max(0, p - 138) // 12))
     im.alpha_composite(g)
     dk = Image.new("RGBA", (w, h), (0, 0, 0, 0))
-    dk.putalpha(grain.point(lambda p: max(0, 124 - p) // 8))
+    dk.putalpha(grain.point(lambda p: max(0, 118 - p) // 12))
     im.alpha_composite(dk)
     return im
 

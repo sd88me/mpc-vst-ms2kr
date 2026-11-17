@@ -731,8 +731,17 @@ void machineLoop(Inst* in)
         if (now - in->ledAt > std::chrono::milliseconds(30)) {
             in->ledAt = now;
             const auto leds = in->runner->getEmulator().panelLeds();
-            std::lock_guard<std::mutex> l(in->ledMx);
-            std::memcpy(in->lit, leds.lit, sizeof in->lit);
+            { std::lock_guard<std::mutex> l(in->ledMx); std::memcpy(in->lit, leds.lit, sizeof in->lit); }
+            // The firmware changes program by itself (the 16 keys outside EDIT, BANK/OCT, its own sequencer): its LCD then reads "B03:Name".
+            // Follow it, except while a change of ours is still on its way to the machine (the LCD shows the old program until then).
+            if (in->heavy.empty() && now >= in->boostUntil + std::chrono::milliseconds(300)) {
+                const auto s = in->runner->getLcdGuiSnapshot();
+                const char* t = s.line0;
+                if (t[0] >= 'A' && t[0] <= 'H' && t[1] >= '0' && t[1] <= '9' && t[2] >= '0' && t[2] <= '9' && t[3] == ':') {
+                    const int p = (t[0] - 'A') * 16 + (t[1] - '0') * 10 + (t[2] - '0') - 1;
+                    if (p >= 0 && p < 128 && p != in->program) { in->program = p; in->favCurrent = -1; }
+                }
+            }
         }
         else std::this_thread::sleep_for(std::chrono::microseconds(500));
     }

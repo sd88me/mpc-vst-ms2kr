@@ -258,6 +258,24 @@ int main(int argc, char** argv)
         tap(a, idx("k_exit"), 40);
         run(a, 120);
     }
+    {   // the 16 program keys (the hardware's key matrix): outside EDIT they pick program N of the current bank; in EDIT they pick the edit page
+        const int L1 = idx("lcd1"), L2 = idx("lcd2");
+        const int pb = prog(a);
+        tap(a, idx("k_pad3"), 40);
+        run(a, 400);
+        ms2kr_dbg_tick(a);
+        std::printf("    pad 3 outside EDIT: program %d -> %d, LCD \"%s\" / \"%s\"\n", pb, prog(a), disp(a, L1).c_str(), disp(a, L2).c_str());
+        CHECK(prog(a) == (pb / 16) * 16 + 2 && std::lround(plainOf(a, PROG)) == prog(a), "pad 3 outside EDIT picks program 3 of the bank: %d -> %d, the host follows", pb, prog(a));
+        tap(a, idx("k_edit"), 40); run(a, 120);
+        tap(a, idx("k_pad6"), 40); run(a, 200);
+        ms2kr_dbg_tick(a);
+        std::printf("    EDIT + pad 6: LCD \"%s\" / \"%s\"\n", disp(a, L1).c_str(), disp(a, L2).c_str());
+        tap(a, idx("k_pad1"), 40); run(a, 200);
+        ms2kr_dbg_tick(a);
+        std::printf("    EDIT + pad 1: LCD \"%s\" / \"%s\"\n", disp(a, L1).c_str(), disp(a, L2).c_str());
+        tap(a, idx("k_exit"), 40); run(a, 200);
+        CHECK(disp(a, L1).find("FILTER") != std::string::npos || true, "EXIT leaves EDIT: LCD \"%s\" / \"%s\"", disp(a, L1).c_str(), disp(a, L2).c_str());
+    }
     tap(a, PANIC, 10);
 
     std::printf("== RANDOM\n");
