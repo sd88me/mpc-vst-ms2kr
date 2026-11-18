@@ -5,5 +5,12 @@
     "firmware": "MPC OS 3.10.1",
     "date": "2026-11-17",
     "note": "Installed from the release zip's own install.sh over an earlier install (ROMs and favourites kept): loads from External Plugins, all six pages draw, the LCD shows the firmware's program and the status line, BANKS tiles light with their names, a saved favourite appears in the PRESET list. Not tried on the device: playing and editing every control, a 0.1.0 project (tested offline with a real 0.1.0 chunk), save and reload, a heavy chord."
+  },
+  {
+    "version": "0.2.1",
+    "device": "MPC Live III (Gen2)",
+    "firmware": "MPC OS 3.10.1",
+    "date": "2026-11-18",
+    "note": "Upgraded from 0.2.0 by the OpenMPC Plugin Manager (local zip, installed into /nvme/VST2 Plugins): favourites.dat and the ROMs kept byte-identical. The Plugin Manager serves the new ROM step (flash.bin 1 MB, boot-362.bin / boot-362.ms2000.bin 768 bytes); its page check accepts the real dumps and a flash.bin upload through the device's web server was written correctly. Loads, boots (MIDI ch 1), 0 dropouts on cores 4/6, all six pages draw. README backup and restore over SSH tried. Not tried: project save and reload."
   }
 ]
