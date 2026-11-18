@@ -26,15 +26,28 @@ the arpeggiator, the mod sequencer and the effects behave as on the hardware.
 
 ## Installing
 
-1. Install the plugin on your MPC, one of two ways (not both):
-   - `MS2KR-<version>-mpc-aarch64.zip` from the [releases](https://github.com/sd88me/mpc-vst-ms2kr/releases): run its `install.sh` on the
-     device as root, or use the Plugin Manager. An older install is upgraded in place and keeps your ROMs, the machine's stored
-     programs and your favourites.
-   - `MS2KR-<version>-mpc-sdk.zip`: copy the folder `sd88me - VST - MS2KR` into a `VST2 Plugins` folder on a drive of the MPC. This
-     needs Preferences → Enhancements (Beta) → Enable Enhancements and External Plugin Support to be on.
-2. Copy your `flash.bin` and `boot-362.bin` into the plugin's `Content/roms/` folder.
-3. Add **MS2KR** to a track. The machine boots in the background for a few seconds; the LCD at the top shows
-   *booting*, then the first program.
+There are two plugin formats. Use one of them, not both: they are the same plugin.
+
+| Plugin format | Zip | How it is installed | Plugin folder |
+|---|---|---|---|
+| **SDK format** (MPC OS 3.10.1 or later) | `MS2KR-<version>-mpc-sdk.zip` | By hand: unzip it, copy the folder `sd88me - VST - MS2KR` into `VST2 Plugins` at the root of a drive the MPC can see, turn on **Preferences > Enhancements (Beta) > Enable Enhancements** and **External Plugin Support**, and restart the MPC | `VST2 Plugins/sd88me - VST - MS2KR/` on that drive |
+| **Older format** (plugins listed in `MPC.settings`) | `MS2KR-<version>-mpc-aarch64.zip` | With the **OpenMPC Plugin Manager**, or by hand over SSH with the zip's `install.sh` (needs root access; on a Live III add `-t /nvme/Synths`) | `sd88me - VST - MS2KR/` in the Synths folder it was installed to |
+
+The zips are on the [releases](https://github.com/sd88me/mpc-vst-ms2kr/releases) page.
+
+### Adding your ROMs
+Copy `flash.bin` and `boot-362.bin` into the plugin folder's `Content/roms/` (make the folder if it isn't there), for example
+`VST2 Plugins/sd88me - VST - MS2KR/Content/roms/`. Use USB, `scp` or the MPC's file browser. This is the same for both formats:
+the OpenMPC Plugin Manager has no ROM step for MS2KR, so copy the files by hand after installing.
+
+Then add **MS2KR** to a track. The machine boots in the background for a few seconds; the LCD at the top shows *booting*, then
+the first program.
+
+### Upgrading
+- **SDK format:** copy the new folder over the old one (merge it, don't delete the old folder first) so `Content/` (your ROMs, the
+  machine's stored programs and your favourites) stays.
+- **Older format:** the OpenMPC Plugin Manager and `install.sh` upgrade in place and keep your ROMs, the machine's stored programs
+  and your favourites.
 
 ## Using it
 
