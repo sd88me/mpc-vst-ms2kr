@@ -37,8 +37,15 @@ The zips are on the [releases](https://github.com/sd88me/mpc-vst-ms2kr/releases)
 
 ### Adding your ROMs
 Copy `flash.bin` and `boot-362.bin` into the plugin folder's `Content/roms/` (make the folder if it isn't there), for example
-`VST2 Plugins/sd88me - VST - MS2KR/Content/roms/`. Use USB, `scp` or the MPC's file browser. This is the same for both formats:
-the OpenMPC Plugin Manager has no ROM step for MS2KR, so copy the files by hand after installing.
+`VST2 Plugins/sd88me - VST - MS2KR/Content/roms/`.
+
+| Plugin format | How to add your ROMs |
+|---|---|
+| SDK format | By hand: over USB, or with the MPC's file browser. |
+| Older format, with the OpenMPC Plugin Manager | Use its **Your ROMs and files** step: it checks each file and copies it into `Content/roms/`, saving the flash dump as `flash.bin`. Keep the boot ROM's name (`boot-362.bin`, or `boot-362.ms2000.bin` for the corrected copy). Or copy them by hand. |
+| Older format, with `install.sh` | By hand: with `scp`, over USB, or with the MPC's file browser. |
+
+The ROM step comes with the first release after 0.2.0; with 0.2.0 or earlier, copy the files by hand.
 
 Then add **MS2KR** to a track. The machine boots in the background for a few seconds; the LCD at the top shows *booting*, then
 the first program.
