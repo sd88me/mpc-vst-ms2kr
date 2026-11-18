@@ -49,6 +49,52 @@ the first program.
 - **Older format:** the OpenMPC Plugin Manager and `install.sh` upgrade in place and keep your ROMs, the machine's stored programs
   and your favourites.
 
+## Backing up your favourites and sounds
+
+Your favourites and your own files are kept in the plugin folder on the MPC, not in your projects (a project keeps only the sound its
+track uses). Back them up before you update the plugin or MPC OS, reset the device, or move to another MPC. These are the files to keep,
+inside the plugin folder `sd88me - VST - MS2KR`:
+
+| File or folder | What it holds |
+|---|---|
+| `Content/favourites.dat` | your favourites |
+| `Content/memory/` | the machine's stored programs and GLOBAL settings |
+| `Content/roms/` | your ROMs |
+
+Your ROMs are yours to keep with your backup, but don't share them.
+
+### Where the plugin folder is
+It is in `VST2 Plugins` on one of the MPC's drives, or in a Synths folder (`/sdcard/Synths`, or `/nvme/Synths` on a Live III),
+depending on how MS2KR was installed. Over SSH (root access), this prints its path:
+
+```bash
+ssh root@<device-ip> 'find /sdcard /nvme /media -maxdepth 3 -type d -name "sd88me - VST - MS2KR" 2>/dev/null'
+```
+
+### Backing up
+- **The plugin folder is on an SD card or USB drive:** plug the drive into a computer and copy the files above to it.
+- **Over SSH**, from a computer: this copies the whole plugin folder into one file, `ms2kr-backup.tar`. Put the folder that holds the
+  plugin folder (the path above without its last part) in place of `<parent folder>`:
+
+  ```bash
+  ssh root@<device-ip> 'cd "<parent folder>" && tar cf - "sd88me - VST - MS2KR"' > ms2kr-backup.tar
+  ```
+
+### Restoring
+Install MS2KR first (on the new device, or after the reset or update), then put back only the files above. Don't copy the whole
+old folder over the new one: that would put the old version of the plugin back too.
+
+- **From a drive:** copy the files back to the same places in the new plugin folder.
+- **Over SSH:** unpack the backup on your computer and send the files back. List only the ones your backup has, and put the new
+  plugin folder's path (found as above) in place of `<plugin folder>`:
+
+  ```bash
+  mkdir ms2kr-backup && tar xf ms2kr-backup.tar -C ms2kr-backup
+  tar cf - -C "ms2kr-backup/sd88me - VST - MS2KR" "Content/favourites.dat" "Content/memory" "Content/roms" | ssh root@<device-ip> 'cd "<plugin folder>" && tar xf -'
+  ```
+
+Then remove MS2KR from its tracks and add it again (or reopen the project), so it reads the restored files.
+
 ## Using it
 
 One green **LCD** is at the top of every page: the firmware's own two lines (program, parameter, value) with the engine
