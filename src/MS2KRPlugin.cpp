@@ -54,7 +54,7 @@ extern "C" {
 #endif
 #define MS2KR_FOURCC(...) MPC_FOURCC(__VA_ARGS__)   // expands MS2KR_UID before MPC_FOURCC counts its arguments
 #ifndef MS2KR_VERSION
-#define MS2KR_VERSION 200
+#define MS2KR_VERSION 201
 #endif
 
 namespace {

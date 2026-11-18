@@ -142,7 +142,7 @@ int main(int argc, char** argv)
     CHECK(a->uniqueID == (VstInt32)0x4d326b52, "uid M2kR (%08x)", (unsigned)a->uniqueID);
     CHECK(!std::strcmp(name, MS2KR_EXPECT_NAME), "name \"%s\"", name);
     CHECK(a->numParams == kNumParams && a->numParams == 183, "183 params: 0.1.0's 138 + RANDOM, the naming keyboard (%d)", a->numParams);
-    CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 200, "version 200 (0.2.0)");
+    CHECK(a->dispatcher(a, effGetVendorVersion, 0, 0, nullptr, 0) == 201, "version 201 (0.2.1)");
     {
         int bad = 0, i = 0;
         FILE* f = std::fopen("params.lock", "r");
