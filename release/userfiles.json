@@ -1,0 +1,16 @@
+[
+  {
+    "path": "Content/roms",
+    "label": "MS2000 / MS2000R ROMs",
+    "description": "MS2KR runs the synthesizer's own firmware: add your own 1 MB flash dump and the DSP56362 boot ROM. They are not included with the plugin.",
+    "hint": "Read flash.bin from your MS2000 or MS2000R with the MS2000 Flash Tool (never on an MS2000B / MS2000BR); the official firmware updater holds only the first 256 KB, which is not enough. Keep the boot ROM's name: boot-362.bin, or boot-362.ms2000.bin for the corrected copy (used first when both are there).",
+    "rules": [
+      {"label": "Main flash (flash.bin, 1 MB)", "ext": [".bin"], "size": 1048576, "save_as": "flash.bin", "unverified": true,
+       "note": "The right size for an MS2000 flash dump. MS2KR checks the firmware when it boots and shows the result on its LCD."},
+      {"label": "DSP56362 boot ROM (boot-362.bin)", "ext": [".bin"], "size": 768, "names": ["boot-362.bin"], "save_as": "boot-362.bin", "unverified": true,
+       "note": "The right size for the DSP56362 boot ROM."},
+      {"label": "DSP56362 boot ROM, corrected copy (boot-362.ms2000.bin)", "ext": [".bin"], "size": 768, "names": ["boot-362.ms2000.bin"], "save_as": "boot-362.ms2000.bin", "unverified": true,
+       "note": "The corrected boot ROM. MS2KR uses it in place of boot-362.bin when both are there."}
+    ]
+  }
+]

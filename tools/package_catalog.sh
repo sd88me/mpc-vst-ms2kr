@@ -34,7 +34,7 @@ if find "$st" -type f | grep -v -E 'PUT_ROMS_HERE\.txt$' | grep -i -E '/(roms|me
 fi
 printf '<PLUGIN name="MS2KR" descriptiveName="MS2KR" format="VST" category="Synth" manufacturer="sd88me" version="%s" file="ms2kr.so" uid="4d326b52" isInstrument="1" fileTime="0" infoUpdateTime="0" numInputs="0" numOutputs="2" isShell="0"/>\n' "$VER" > "$st/entry.xml"
 python3 "$MPC_VST/tools/release.py" --so "$st/ms2kr.so" --skin "$st/$DIR" --entry "$st/entry.xml" --version "$VER" --extra "$st/extra:Content" \
-  --user-data Content/roms --user-data Content/memory --user-data Content/favourites.dat \
+  --user-data Content/roms --user-data Content/memory --user-data Content/favourites.dat --user-files "$here/release/userfiles.json" \
   --repo sd88me/mpc-vst-ms2kr --license GPL-3.0-only --id ms2kr \
   --requires "64-bit MPC (Live III and others) and your own MS2000R firmware dump (flash.bin and boot-362.bin)" \
   --about "Korg MS2000R emulation: the synthesizer's own firmware on an emulated H8S and DSP56362, with a native MPC panel, RANDOM and named favourites." \
